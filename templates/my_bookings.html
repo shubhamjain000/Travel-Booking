@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-3">My Bookings</h3>
+
+{% if bookings %}
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Trip</th>
+          <th>Date & Time</th>
+          <th>Seats</th>
+          <th>Total (₹)</th>
+          <th>Status</th>
+          <th>Booked On</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for b in bookings %}
+        <tr>
+          <td>{{ b.id }}</td>
+          <td>{{ b.travel_option.type }}: {{ b.travel_option.source }} → {{ b.travel_option.destination }}</td>
+          <td>{{ b.travel_option.date_time|date:"M d, Y" }} {{ b.travel_option.date_time|time:"H:i" }}</td>
+          <td>{{ b.num_seats }}</td>
+          <td>{{ b.total_price }}</td>
+          <td>
+            <span class="badge {% if b.status == 'Confirmed' %}bg-success{% else %}bg-secondary{% endif %}">
+              {{ b.status }}
+            </span>
+          </td>
+          <td class="small text-muted">{{ b.booking_date|date:"M d, Y H:i" }}</td>
+          <td class="text-end">
+            {% if b.status == "Confirmed" %}
+              <a href="{% url 'cancel_booking' b.id %}" class="btn btn-outline-danger btn-sm"
+                 onclick="return confirm('Cancel this booking?');">
+                Cancel
+              </a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="alert alert-info">You don’t have any bookings yet. <a href="{% url 'travel_list' %}" class="fw-semibold">Browse trips</a></div>
+{% endif %}
+{% endblock %}

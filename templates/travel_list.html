@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="mb-4 p-4 rounded-3 hero bg-gradient">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <h1 class="display-6 fw-bold text-white">Find your next journey</h1>
+      <p class="text-light mb-0">Flights, Trains, and Buses — compare and book instantly.</p>
+    </div>
+  </div>
+</section>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form method="get" class="row g-3 align-items-end">
+      <div class="col-md-3"><label class="form-label">Type</label>{{ form.type }}</div>
+      <div class="col-md-3"><label class="form-label">Source</label>{{ form.source }}</div>
+      <div class="col-md-3"><label class="form-label">Destination</label>{{ form.destination }}</div>
+      <div class="col-md-3"><label class="form-label">Date</label>{{ form.date }}</div>
+      <div class="col-12 d-flex justify-content-end">
+        <button class="btn btn-primary">Search</button>
+        <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary ms-2">Reset</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if travels %}
+  <div class="row g-4">
+    {% for t in travels %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge bg-secondary">{{ t.type }}</span>
+              <span class="small text-muted">{{ t.date_time|date:"M d, Y" }} • {{ t.date_time|time:"H:i" }}</span>
+            </div>
+            <h5 class="card-title">{{ t.source }} → {{ t.destination }}</h5>
+            <p class="card-text mb-2">
+              <span class="fw-semibold">₹{{ t.price }}</span> &nbsp;·&nbsp;
+              <span class="{% if t.available_seats > 5 %}text-success{% elif t.available_seats > 0 %}text-warning{% else %}text-danger{% endif %}">
+                {{ t.available_seats }} seats left
+              </span>
+            </p>
+          </div>
+          <div class="card-footer bg-white border-0">
+            <a class="btn btn-outline-primary w-100 {% if t.available_seats == 0 %}disabled{% endif %}"
+               href="{% url 'book_travel' t.id %}">
+              {% if t.available_seats == 0 %}Sold Out{% else %}Book Now{% endif %}
+            </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-info">No travel options match your search.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5">
+          
+          <!-- Booking Header -->
+          <div class="mb-4 text-center">
+            <h3 class="fw-bold text-primary">
+              <i class="bi bi-ticket-perforated-fill me-2"></i>
+              Book Your Travel
+            </h3>
+            <p class="text-muted">Please confirm your booking details below</p>
+          </div>
+
+          <!-- Travel Details -->
+          <div class="alert alert-info d-flex justify-content-between align-items-center rounded-3">
+            <div>
+              <h5 class="mb-1">{{ travel.type }} — 
+                <span class="text-dark">{{ travel.source }}</span> 
+                <i class="bi bi-arrow-right mx-1"></i> 
+                <span class="text-dark">{{ travel.destination }}</span>
+              </h5>
+              <small class="text-muted">
+                <i class="bi bi-calendar-event me-1"></i>
+                {{ travel.date_time|date:"M d, Y" }} at {{ travel.date_time|time:"H:i" }}
+              </small>
+            </div>
+            <div class="text-end">
+              <p class="mb-1 fw-semibold">
+                <i class="bi bi-cash-coin me-1"></i> ₹{{ travel.price }} <span class="text-muted">/ seat</span>
+              </p>
+              <span class="badge bg-success rounded-pill">
+                {{ travel.available_seats }} seats left
+              </span>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <!-- Booking Form -->
+          <form method="post" class="row g-3" novalidate>
+            {% csrf_token %}
+            
+            <!-- Number of Seats -->
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">{{ form.num_seats.label }}</label>
+              {{ form.num_seats }}
+              {% if form.num_seats.errors %}
+                <div class="text-danger small">{{ form.num_seats.errors|striptags }}</div>
+              {% endif %}
+            </div>
+
+            <!-- Buttons -->
+            <div class="col-12 mt-4">
+              <button class="btn btn-primary px-4 rounded-pill">
+                <i class="bi bi-check2-circle me-1"></i> Confirm Booking
+              </button>
+              <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary ms-2 rounded-pill">
+                <i class="bi bi-arrow-left me-1"></i> Back
+              </a>
+            </div>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

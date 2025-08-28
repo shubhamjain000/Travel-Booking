@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# Django stuff
+db.sqlite3
+*.log
+media/
+
+# Static files
+staticfiles/
+static/
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Migrations (optional, but usually keep them in repo if teamwork)
+# Uncomment if you want to ignore all migrations
+# */migrations/*
+# !*/migrations/__init__.py
+
+# Render/Heroku
+*.sqlite3
