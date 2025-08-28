@@ -15,6 +15,17 @@ import os
 import dj_database_url
 import os
 
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
+        conn_max_age=600
+    )
+}
+
+
 # Security
 DEBUG = False
 ALLOWED_HOSTS = ['*']
